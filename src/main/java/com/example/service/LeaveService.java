@@ -39,14 +39,11 @@ public class LeaveService {
     }
 
     public LeaveResponseDTO approveLeave(Long id) {
-
         Leave leave = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Leave not found with id: " + id));
 
         leave.setStatus(LeaveStatus.APPROVED);
-        
         LocalDate current = leave.getStartDate();
-
         while (!current.isAfter(leave.getEndDate())) {
 
             Attendance attendance = new Attendance();
@@ -55,7 +52,6 @@ public class LeaveService {
             attendance.setStatus(AttendanceStatus.LEAVE);
 
             attendanceRepository.save(attendance);
-
             current = current.plusDays(1);
         }
 
