@@ -38,15 +38,13 @@ public class LeaveService {
         return mapToResponse(saved);
     }
 
-    // 🔥 APPROVE LEAVE + AUTO MARK ATTENDANCE
     public LeaveResponseDTO approveLeave(Long id) {
 
         Leave leave = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Leave not found with id: " + id));
 
         leave.setStatus(LeaveStatus.APPROVED);
-
-        // 🔥 ADD THIS LOGIC HERE
+        
         LocalDate current = leave.getStartDate();
 
         while (!current.isAfter(leave.getEndDate())) {
